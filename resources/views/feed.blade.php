@@ -1,4 +1,4 @@
-<x-layout>
+<x-layout title="Feed | PIXL">
 
   @include('partials.navigation')
 

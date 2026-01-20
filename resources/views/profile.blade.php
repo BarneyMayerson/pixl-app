@@ -1,4 +1,4 @@
-<x-layout>
+<x-layout title="Profile | PIXL">
 
   @include('partials.navigation', ['showPostButton' => true])
 
