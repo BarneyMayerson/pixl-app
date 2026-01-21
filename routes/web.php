@@ -20,6 +20,20 @@ str,
                 'displayName' => 'Michael',
                 'handle' => '@mmich_jj',
             ],
+            'replies' => [
+                [
+                    'postedDateTime' => '3h',
+                    'content' => '<p>Heh — this looks just like me! UH-HAA FEED</p>',
+                    'likeCount' => 4,
+                    'replyCount' => 11,
+                    'repostCount' => 27,
+                    'profile' => [
+                        'avatar' => '/storage/images/simon-chilling.png',
+                        'displayName' => 'Simon',
+                        'handle' => '@simonswiss',
+                    ],
+                ],
+            ],
         ],
     ]));
 
@@ -41,6 +55,20 @@ str,
                 'avatar' => '/storage/images/michael.png',
                 'displayName' => 'Michael',
                 'handle' => '@mmich_jj',
+            ],
+            'replies' => [
+                [
+                    'postedDateTime' => '3h',
+                    'content' => '<p>Heh — this looks just like me! UGH PROFILE</p>',
+                    'likeCount' => 4,
+                    'replyCount' => 11,
+                    'repostCount' => 27,
+                    'profile' => [
+                        'avatar' => '/storage/images/simon-chilling.png',
+                        'displayName' => 'Simon',
+                        'handle' => '@simonswiss',
+                    ],
+                ],
             ],
         ],
     ]));
