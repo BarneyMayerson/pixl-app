@@ -45,4 +45,12 @@ class Post extends Model
     {
         return $this->hasMany(Like::class);
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Post, $this>
+     */
+    public function reposts(): HasMany
+    {
+        return $this->hasMany(Post::class, 'repost_of_id');
+    }
 }

@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('profile_id')->constrained()->cascadeOnDelete();
             $table->foreignId('parent_id')->nullable()->constrained('posts')->cascadeOnDelete();
-            $table->text('content');
+            $table->foreignId('repost_of_id')->nullable()->constrained('posts')->cascadeOnDelete();
+            $table->text('content')->nullable();
             $table->timestamps();
 
             $table->index(['parent_id']);
