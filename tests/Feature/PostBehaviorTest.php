@@ -14,3 +14,24 @@ it('allows a profile to publish a post', function (): void {
     expect($post->parent_id)->toBeNull();
     expect($post->repost_of_id)->toBeNull();
 });
+
+it('can reply to post', function (): void {
+    $originPost = Post::factory()->create();
+    $replier = Profile::factory()->create();
+
+    $reply = Post::reply($replier, $originPost, 'This is a reply.');
+
+    expect($reply->exists())->toBeTrue();
+    expect($reply->parent->is($originPost))->toBeTrue();
+    expect($originPost->replies->first()->is($reply))->toBeTrue();
+});
+
+it('can have many repliest', function (): void {
+    $originPost = Post::factory()->create();
+    $replies = Post::factory(4)->create([
+        'parent_id' => $originPost->id,
+    ]);
+
+    expect($replies->first()->parent->is($originPost))->toBeTrue();
+    expect($originPost->replies->count())->toBe(4);
+});
