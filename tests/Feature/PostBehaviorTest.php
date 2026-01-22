@@ -68,3 +68,22 @@ it('creates quote repost', function (): void {
     expect($repost->content)->toBe($content);
     expect($originPost->reposts)->toHaveCount(1);
 });
+
+it('prevents duplicate reposts by the same profile', function (): void {
+    $originPost = Post::factory()->create();
+    $reposter = Profile::factory()->create();
+
+    $repostOne = Post::repost($reposter, $originPost);
+    $repostTwo = Post::repost($reposter, $originPost);
+
+    expect($repostOne->is($repostTwo))->toBeTrue();
+});
+
+it('can remove a repost', function (): void {
+    $originalPost = Post::factory()->create();
+    $profile = Post::factory()->repost($originalPost)->create()->profile;
+
+    Post::removeRepost($profile, $originalPost);
+
+    expect($originalPost->reposts)->toHaveCount(0);
+});
