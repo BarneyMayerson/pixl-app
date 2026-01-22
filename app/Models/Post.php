@@ -37,4 +37,12 @@ class Post extends Model
     {
         return $this->hasMany(Post::class, 'parent_id');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Like, $this>
+     */
+    public function likes(): HasMany
+    {
+        return $this->hasMany(Like::class);
+    }
 }
