@@ -35,3 +35,36 @@ it('can have many repliest', function (): void {
     expect($replies->first()->parent->is($originPost))->toBeTrue();
     expect($originPost->replies->count())->toBe(4);
 });
+
+it('creates plain repost', function (): void {
+    $originPost = Post::factory()->create();
+    $reposter = Profile::factory()->create();
+
+    $repost = Post::repost($reposter, $originPost);
+
+    expect($repost->exists())->toBeTrue();
+    expect($repost->content)->toBeNull();
+    expect($originPost->reposts)->toHaveCount(1);
+});
+
+it('can have many reposts', function (): void {
+    $originPost = Post::factory()->create();
+    $reposts = Post::factory(3)->create([
+        'repost_of_id' => $originPost->id,
+    ]);
+
+    expect($reposts->first()->repostOf->is($originPost))->toBeTrue();
+    expect($originPost->reposts->count())->toBe(3);
+});
+
+it('creates quote repost', function (): void {
+    $originPost = Post::factory()->create();
+    $reposter = Profile::factory()->create();
+    $content = 'Check this out!';
+
+    $repost = Post::repost($reposter, $originPost, $content);
+
+    expect($repost->exists())->toBeTrue();
+    expect($repost->content)->toBe($content);
+    expect($originPost->reposts)->toHaveCount(1);
+});
