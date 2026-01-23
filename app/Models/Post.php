@@ -92,7 +92,7 @@ class Post extends Model
         ]);
     }
 
-    public static function removeRepost(Profile $profile, Post $originalPost)
+    public static function removeRepost(Profile $profile, Post $originalPost): void
     {
         static::query()
             ->where('profile_id', $profile->id)
