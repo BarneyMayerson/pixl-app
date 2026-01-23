@@ -32,7 +32,7 @@ class PostFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'parent_id' => $parentPost->id,
-            'content' => null,
+            'content' => fake()->realText(120),
         ]);
     }
 
@@ -40,7 +40,7 @@ class PostFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'repost_of_id' => $originalPost->id,
-            'content' => fake()->realText(120),
+            'content' => null,
         ]);
     }
 
