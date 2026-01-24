@@ -22,7 +22,7 @@
     <ol class="border-pixl-light/10 border-t pt-4">
 
       @foreach ($posts as $item)
-        <x-post :post="$item->isRepost() && $item->content == null ? $item->repostOf : $item" :show-replies="true" />
+        <x-post :post="$item->isRepost() && $item->content == null ? $item->repostOf : $item" />
       @endforeach
 
     </ol>

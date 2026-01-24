@@ -13,7 +13,9 @@
           <a class="hover:underline"
             href="{{ route('profiles.show', $post->profile) }}">{{ $post->profile->display_name }}</a>
         </p>
-        <p class="text-pixl-light/40 text-xs">{{ $post->created_at }}</p>
+        <p class="text-pixl-light/40 text-xs">
+          <a href="{{ route('posts.show', [$post->profile, $post]) }}">{{ $post->created_at }}</a>
+        </p>
         <p>
           <a class="text-pixl-light/40 hover:text-pixl-light/60 text-xs"
             href="{{ route('profiles.show', $post->profile) }}">{{ $post->profile->handle }}</a>
@@ -168,5 +170,12 @@
       </div>
     @endif
 
+    @if ($showReplies)
+      <ol>
+        @foreach ($post->replies as $reply)
+          <x-reply :post="$reply" :show-engagement="$showEngagement" :show-replies="$showReplies" />
+        @endforeach
+      </ol>
+    @endif
   </div>
 </li>
