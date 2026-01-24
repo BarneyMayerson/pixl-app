@@ -1,6 +1,6 @@
 <li class="not-first:pt-2.5 flex items-start gap-4">
   <a href="/profile" class="shrink-0">
-    <img src="{{ $item->profile->avatar_url }}" alt="Avatar for {{ $item->profile->display_name }}"
+    <img src="{{ $post->profile->avatar_url }}" alt="Avatar for {{ $post->profile->display_name }}"
       class="size-10 object-cover" />
   </a>
   <div class="grow pt-1.5">
@@ -8,11 +8,11 @@
       <!-- User meta -->
       <div class="flex items-center justify-between gap-4">
         <div class="flex items-center gap-2.5">
-          <p><a class="hover:underline" href="/{{ $item->profile->handle }}">{{ $item->profile->display_name }}</a></p>
-          <p class="text-pixl-light/40 text-xs">{{ $item->created_at }}</p>
+          <p><a class="hover:underline" href="/{{ $post->profile->handle }}">{{ $post->profile->display_name }}</a></p>
+          <p class="text-pixl-light/40 text-xs">{{ $post->created_at }}</p>
           <p>
             <a class="text-pixl-light/40 hover:text-pixl-light/60 text-xs"
-              href="/{{ $item->profile->handle }}">{{ $item->profile->handle }}</a>
+              href="/{{ $post->profile->handle }}">{{ $post->profile->handle }}</a>
           </p>
         </div>
         <button class="gap-0.75 group flex py-2" aria-label="Post options">
@@ -24,11 +24,11 @@
       <!-- Post content -->
       <div class="[&_a]:text-pixl mt-4 flex flex-col gap-3 text-sm [&_a]:hover:underline">
         <p>
-          {!! $item->content !!}
+          {!! $post->content !!}
 
-          @if ($item->isRepost() && $item->content != null)
+          @if ($post->isRepost() && $post->content != null)
             <ul>
-              @include('partials.profile.post', ['item' => $item->repostOf])
+              <x-post :post="$post->repostOf" :show-engagement="false" />
             </ul>
           @endif
         </p>
@@ -39,7 +39,7 @@
           <!-- Like -->
           <div class="flex items-center gap-1">
             <button aria-label="Like" class="hover:text-pixl">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="h-[17px]" viewBox="0 0 20 17">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="h-4.25" viewBox="0 0 20 17">
                 <g fill="currentColor" clip-path="url(#a)">
                   <path
                     d="M5.714 0H2.857v2.857h2.857V0Zm2.858 0H5.714v2.857h2.858V0Zm2.857 2.858H8.57v2.857h2.858V2.858ZM14.288 0h-2.857v2.857h2.857V0Z" />
@@ -56,12 +56,12 @@
                 </defs>
               </svg>
             </button>
-            <span class="text-sm">{{ $item->likes_count }}</span>
+            <span class="text-sm">{{ $post->likes_count }}</span>
           </div>
           <!-- Comment -->
           <div class="flex items-center gap-1">
             <button aria-label="Comment" class="hover:text-pixl">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="h-[17px]" viewBox="0 0 20 17">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="h-4.25" viewBox="0 0 20 17">
                 <g fill="currentColor" clip-path="url(#a)">
                   <path d="M3.581 0h1.824v1.824H3.581z" />
                   <path
@@ -80,12 +80,12 @@
                 </defs>
               </svg>
             </button>
-            <span class="text-sm">{{ $item->replies_count }}</span>
+            <span class="text-sm">{{ $post->replies_count }}</span>
           </div>
           <!-- Re-post -->
           <div class="flex items-center gap-1">
             <button aria-label="Re-post" class="hover:text-pixl">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="h-[17px]" viewBox="0 0 20 17">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="h-4.25" viewBox="0 0 20 17">
                 <path fill="currentColor" d="M1.429 3.857H0v1.429h1.429V3.857Z" />
                 <path fill="currentColor" d="M2.854 3.857H1.426v1.429h1.428V3.857Z" />
                 <path fill="currentColor" d="M2.854 2.429H1.426v1.429h1.428V2.429Zm1.432 0H2.858v1.429h1.428v-1.43Z" />
@@ -111,14 +111,14 @@
                   d="M15.714 5.286h-1.428v1.429h1.428V5.286Zm-1.428 0h-1.428v1.429h1.428V5.286Zm-1.43 0h-1.428v1.429h1.428V5.286Z" />
               </svg>
             </button>
-            <span class="text-sm">{{ $item->reposts_count }}</span>
+            <span class="text-sm">{{ $post->reposts_count }}</span>
           </div>
         </div>
         <div class="flex items-center gap-3">
           <!-- Save -->
           <div class="flex items-center gap-1">
             <button aria-label="Save" class="hover:text-pixl">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="h-[17px]" viewBox="0 0 14 17">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="h-4.25" viewBox="0 0 14 17">
                 <g fill="currentColor" clip-path="url(#a)">
                   <path
                     d="M1.545 7.727H0v1.546h1.545V7.727Zm0 1.546H0v1.545h1.545V9.273Zm0 1.545H0v1.546h1.545v-1.546Zm0 1.546H0v1.545h1.545v-1.545Zm0 1.546H0v1.545h1.545v-1.546Zm1.545 1.544H1.546V17h1.546v-1.546Z" />
@@ -142,7 +142,7 @@
           <!-- Share -->
           <div class="flex items-center gap-1">
             <button aria-label="Share" class="hover:text-pixl">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="h-[17px]" viewBox="0 0 19 17">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="h-4.25" viewBox="0 0 19 17">
                 <g fill="currentColor" clip-path="url(#a)">
                   <path d="M2.125 6.375H0V8.5h2.125V6.375Z" />
                   <path d="M4.25 6.375H2.123V8.5H4.25V6.375Zm0-2.125H2.123v2.125H4.25V4.25Z" />
@@ -170,5 +170,13 @@
         </div>
       </div>
     </div>
+
+    @if ($showReplies)
+      <ol>
+        @foreach ($post->replies as $reply)
+          <x-reply :post="$reply" />
+        @endforeach
+      </ol>
+    @endif
   </div>
 </li>
