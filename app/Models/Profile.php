@@ -52,7 +52,7 @@ class Profile extends Model
      */
     public function followers(): BelongsToMany
     {
-        return $this->belongsToMany(Follow::class, 'follows', 'following_profile_id', 'follower_profile_id');
+        return $this->belongsToMany(Profile::class, 'follows', 'following_profile_id', 'follower_profile_id');
     }
 
     /**
@@ -60,6 +60,6 @@ class Profile extends Model
      */
     public function followings(): BelongsToMany
     {
-        return $this->belongsToMany(Follow::class, 'follows', 'follower_profile_id', 'following_profile_id');
+        return $this->belongsToMany(Profile::class, 'follows', 'follower_profile_id', 'following_profile_id');
     }
 }

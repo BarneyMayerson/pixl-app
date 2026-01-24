@@ -19,12 +19,15 @@ class ProfileFactory extends Factory
      */
     public function definition(): array
     {
+        $handle = fake()->unique()->userName();
+
         return [
             'user_id' => User::factory(),
             'display_name' => fake()->name(),
-            'handle' => fake()->unique()->userName(),
+            'handle' => $handle,
             'bio' => fake()->sentences(3, true),
-            'avatar_url' => fake()->imageUrl(60, 60, 'people'),
+            'avatar_url' => 'https://i.pravatar.cc/150?u='.fake()->unique()->uuid(),
+            'cover_url' => 'https://dummyimage.com/1400x640/777/ECA749?text='.$handle,
         ];
     }
 }
