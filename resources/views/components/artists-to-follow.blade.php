@@ -2,13 +2,13 @@
   <h2 class="text-pixl-light/60 text-sm">Artists to follow</h2>
   <ol class="mt-4 flex flex-col gap-4">
 
-    @foreach ($artists as $artist)
+    @foreach ($profiles as $profile)
       <li class="flex items-center justify-between gap-4">
         <div class="flex items-center gap-2.5">
-          <img src="{{ asset($artist['image']) }}" alt="{{ $artist['name'] }}" class="size-8 object-cover" />
+          <img src="{{ $profile->avatar_url }}" alt="Avatar of {{ $profile->display_name }}" class="size-8 object-cover" />
           <div class="text-sm">
-            <div class="font-medium">{{ $artist['name'] }}</div>
-            <div class="text-pixl-light/60 text-xs">@<spen>{{ $artist['handle'] }}</span></div>
+            <div class="font-medium">{{ $profile->display_name }}</div>
+            <div class="text-pixl-light/60 text-xs">@<span>{{ $profile->handle }}</span></div>
           </div>
         </div>
         <button
