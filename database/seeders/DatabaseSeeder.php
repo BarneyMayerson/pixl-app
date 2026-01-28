@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
             }
         }
 
-        $posts = Post::factory(50)->recycle($profiles)->create();
+        $posts = Post::factory(100)->recycle($profiles)->create();
 
         foreach ($profiles as $profile) {
             $profilePosts = $posts->where('profile_id', $profile->id);
@@ -48,7 +48,7 @@ class DatabaseSeeder extends Seeder
             $profilePosts = $posts->where('profile_id', $profile->id);
 
             foreach ($profilePosts as $repost) {
-                $toRepost = $profiles->random(random_int(1, 2))->except($profile->id);
+                $toRepost = $profiles->random(random_int(3, 6))->except($profile->id);
 
                 foreach ($toRepost as $repostProfile) {
                     Post::repost($repostProfile, $repost, random_int(0, 1) ? 'Great post!' : null);

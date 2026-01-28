@@ -25,6 +25,7 @@ class PostFactory extends Factory
             'parent_id' => null,
             'repost_of_id' => null,
             'content' => fake()->realText(),
+            'created_at' => fake()->dateTimeBetween('-1 year', 'now'),
         ];
     }
 

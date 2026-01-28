@@ -9,13 +9,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', fn () => view('welcome'));
 
 Route::get('/dev/login', function () {
-    $user = User::inRandomOrder()->first();
+    $user = User::findOrFail(9);
 
     Auth::login($user);
     request()->session()->regenerate();
 
     return redirect()->intended(route('profiles.show', $user->profile));
-});
+})->name('login');
 
 Route::get('/dev/logout', function () {
     Auth::logout();
@@ -23,6 +23,10 @@ Route::get('/dev/logout', function () {
     request()->session()->regenerateToken();
 
     return redirect()->intended('/feed');
+});
+
+Route::middleware('auth')->group(function (): void {
+    Route::get('/home', [PostController::class, 'index'])->name('posts.index');
 });
 
 Route::get('/feed', function () {

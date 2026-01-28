@@ -45,7 +45,7 @@
 
             <!-- Like -->
             <div class="flex items-center gap-1">
-              <button aria-label="Like" class="hover:text-pixl">
+              <button aria-label="Like" @class(['text-pixl' => $post->liked_by_viewer]) class="hover:text-pixl">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="h-4.25" viewBox="0 0 20 17">
                   <g fill="currentColor" clip-path="url(#a)">
                     <path
@@ -63,7 +63,7 @@
                   </defs>
                 </svg>
               </button>
-              <span class="text-sm">{{ $post->likes_count }}</span>
+              <span @class(['text-pixl' => $post->liked_by_viewer]) class="text-sm">{{ $post->likes_count }}</span>
             </div>
             <!-- Comment -->
             <div class="flex items-center gap-1">
@@ -91,7 +91,7 @@
             </div>
             <!-- Re-post -->
             <div class="flex items-center gap-1">
-              <button aria-label="Re-post" class="hover:text-pixl">
+              <button aria-label="Re-post" @class(['text-pixl' => $post->reposted_by_viewer]) class="hover:text-pixl">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="h-4.25" viewBox="0 0 20 17">
                   <path fill="currentColor" d="M1.429 3.857H0v1.429h1.429V3.857Z" />
                   <path fill="currentColor" d="M2.854 3.857H1.426v1.429h1.428V3.857Z" />
@@ -119,7 +119,7 @@
                     d="M15.714 5.286h-1.428v1.429h1.428V5.286Zm-1.428 0h-1.428v1.429h1.428V5.286Zm-1.43 0h-1.428v1.429h1.428V5.286Z" />
                 </svg>
               </button>
-              <span class="text-sm">{{ $post->reposts_count }}</span>
+              <span @class(['text-pixl' => $post->reposted_by_viewer]) class="text-sm">{{ $post->reposts_count }}</span>
             </div>
 
           </div>

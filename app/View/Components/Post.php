@@ -11,6 +11,8 @@ use Illuminate\View\Component;
 
 class Post extends Component
 {
+    private readonly PostModel $originalPost;
+
     /**
      * Create a new component instance.
      */
@@ -19,7 +21,8 @@ class Post extends Component
         public bool $showEngagement = true,
         public bool $showReplies = false
     ) {
-        //
+        $this->originalPost = $post;
+        $this->post = $post->isRepost() && $post->content == null ? $post->repostOf : $post;
     }
 
     /**
