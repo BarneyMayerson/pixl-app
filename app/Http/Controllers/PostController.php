@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreatePostRequest;
+use App\Models\Like;
 use App\Models\Post;
 use App\Models\Profile;
 use App\Queries\TimelineQuery;
@@ -57,5 +58,32 @@ class PostController extends Controller
         Post::reply($replier, $post, $request->content);
 
         return to_route('posts.index')->with('success', 'Reply posted.');
+    }
+
+    public function repost(Profile $profile, Post $post)
+    {
+        $reposter = Auth::user()->profile;
+
+        Post::repost($reposter, $post);
+
+        return to_route('posts.index')->with('success', 'Reposted.');
+    }
+
+    public function quote(Profile $profile, Post $post, CreatePostRequest $request)
+    {
+        $replier = Auth::user()->profile;
+
+        Post::quote($replier, $post, $request->content);
+
+        return to_route('posts.index')->with('success', 'Quote posted.');
+    }
+
+    public function like(Profile $profile, Post $post)
+    {
+        $liker = Auth::user()->profile;
+
+        $like = Like::createLike($liker, $post);
+
+        return response()->json(compact('like'));
     }
 }

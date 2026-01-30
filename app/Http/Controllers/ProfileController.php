@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Models\Follow;
 use App\Models\Post;
 use App\Models\Profile;
+use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
@@ -52,5 +54,18 @@ class ProfileController extends Controller
             ->get();
 
         return view('profiles.replies', compact('profile', 'posts'));
+    }
+
+    public function follow(Profile $profile)
+    {
+        $follower = Auth::user()->profile;
+
+        if ($follower->is($profile)) {
+            return back()->with('error', 'You cannot follow yourself.');
+        }
+
+        $follow = Follow::createFollow($follower, $profile);
+
+        return response()->json(compact('follow'));
     }
 }
