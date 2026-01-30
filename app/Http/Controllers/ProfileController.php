@@ -68,4 +68,17 @@ class ProfileController extends Controller
 
         return response()->json(compact('follow'));
     }
+
+    public function unfollow(Profile $profile)
+    {
+        $follower = Auth::user()->profile;
+
+        if ($follower->is($profile)) {
+            return back()->with('error', 'You cannot unfollow yourself.');
+        }
+
+        $result = Follow::removeFollow($follower, $profile);
+
+        return response()->json(compact('result'));
+    }
 }
