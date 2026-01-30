@@ -49,4 +49,13 @@ class PostController extends Controller
 
         return view('posts.show', compact('post'));
     }
+
+    public function reply(Profile $profile, Post $post, CreatePostRequest $request)
+    {
+        $replier = Auth::user()->profile;
+
+        Post::reply($replier, $post, $request->content);
+
+        return to_route('posts.index')->with('success', 'Reply posted.');
+    }
 }
