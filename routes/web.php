@@ -5,8 +5,9 @@ use App\Http\Controllers\ProfileController;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
-Route::get('/', fn () => view('welcome'));
+Route::get('/', fn () => Inertia::render('Welcome'));
 
 Route::get('/dev/login', function () {
     $user = User::findOrFail(9);
