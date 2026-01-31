@@ -1,8 +1,4 @@
 <x-layout title="Feed | PIXL">
-
-  @include('partials.navigation')
-
-  <!-- Content -->
   <main class="-mx-4 flex grow flex-col gap-4 overflow-y-auto px-4 py-4">
     <div class="h-full">
       <nav class="overflow-x-auto [scrollbar-width:none]">
@@ -30,7 +26,4 @@
       <div class="h-20 bg-[url(/resources/images/white-noise.gif)]"></div>
     </footer>
   </main>
-
-  @include('partials.aside')
-
 </x-layout>
