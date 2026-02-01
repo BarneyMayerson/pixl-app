@@ -1,5 +1,15 @@
+<script setup>
+import Layout from "../Layouts/layout.vue";
+
+defineProps({
+  greeting: "",
+});
+</script>
+
 <template>
-  <div class="text-center">
-    <h1 class="text-3xl text-pixl">Welcome page.</h1>
-  </div>
+  <Layout>
+    <div class="flex-1">
+      {{ greeting }}
+    </div>
+  </Layout>
 </template>

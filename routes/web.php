@@ -7,7 +7,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', fn () => Inertia::render('Welcome'));
+Route::get('/', fn () => Inertia::render('Welcome', [
+    'greeting' => 'Hi there!',
+]));
 
 Route::get('/dev/login', function () {
     $user = User::findOrFail(9);
