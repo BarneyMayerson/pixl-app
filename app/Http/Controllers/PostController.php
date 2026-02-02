@@ -11,6 +11,7 @@ use App\Models\Profile;
 use App\Queries\PostThreadQuery;
 use App\Queries\TimelineQuery;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class PostController extends Controller
 {
@@ -20,7 +21,9 @@ class PostController extends Controller
 
         $posts = TimelineQuery::forViewer($profile)->get();
 
-        return view('posts.index', compact('posts', 'profile'));
+        // return $posts;
+
+        return Inertia::render('Posts/Index', compact('posts', 'profile'));
     }
 
     public function store(CreatePostRequest $request)
