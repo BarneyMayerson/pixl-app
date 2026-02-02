@@ -24,7 +24,7 @@ defineProps({
 
 <template>
   <li class="not-first:pt-2.5 flex items-start gap-4">
-    <a href="{{ route('profiles.show', $post->profile) }}" class="shrink-0">
+    <a :href="route('profiles.show', post.profile)" class="shrink-0">
       <img
         :src="post.profile.avatar_url"
         :alt="`Avatar for ${post.profile.display_name}`"
@@ -39,17 +39,17 @@ defineProps({
             <p>
               <a
                 class="hover:underline"
-                href="{{ route('profiles.show', $post->profile) }}"
+                :href="route('profiles.show', post.profile)"
                 >{{ post.profile.display_name }}</a
               >
             </p>
             <p class="text-pixl-light/40 text-xs">
-              <a href="{{ route('posts.show', [$post->profile, $post]) }}"></a>
+              <a :href="route('posts.show', [post.profile, post])"></a>
             </p>
             <p>
               <a
                 class="text-pixl-light/40 hover:text-pixl-light/60 text-xs"
-                href="{{ route('profiles.show', $post->profile) }}"
+                :href="route('profiles.show', post.profile)"
                 >{{ post.profile.handle }}</a
               >
             </p>
