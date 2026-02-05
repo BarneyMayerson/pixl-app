@@ -23,7 +23,7 @@ defineProps({
 </script>
 
 <template>
-  <li class="not-first:pt-2.5 flex items-start gap-4">
+  <li class="flex items-start gap-4 not-first:pt-2.5">
     <a :href="route('profiles.show', post.profile)" class="shrink-0">
       <img
         :src="post.profile.avatar_url"
@@ -44,7 +44,9 @@ defineProps({
               >
             </p>
             <p class="text-pixl-light/40 text-xs">
-              <a :href="route('posts.show', [post.profile, post])"></a>
+              <a :href="route('posts.show', [post.profile, post])">
+                {{ post.created_at }}
+              </a>
             </p>
             <p>
               <a
@@ -54,7 +56,7 @@ defineProps({
               >
             </p>
           </div>
-          <button class="gap-0.75 group flex py-2" aria-label="Post options">
+          <button class="group flex gap-0.75 py-2" aria-label="Post options">
             <span
               class="bg-pixl-light/40 group-hover:bg-pixl-light/60 size-1"
             ></span>

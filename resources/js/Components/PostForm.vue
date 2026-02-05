@@ -1,6 +1,7 @@
 <script setup>
 import ImageIcon from "@/Components/Icons/ImageIcon.vue";
 import VideoIcon from "@/Components/Icons/VideoIcon.vue";
+import { Form } from "@inertiajs/vue3";
 
 defineProps({
   profile: {
@@ -25,7 +26,13 @@ defineProps({
       />
     </a>
 
-    <form class="grow" method="POST" action="{{ route('posts.store') }}">
+    <Form
+      class="grow"
+      method="POST"
+      :action="route('posts.store')"
+      resetOnSuccess
+      #default="{ errors }"
+    >
       <label class="sr-only" for="content">Post body</label>
       <textarea
         class="w-full resize-none text-lg"
@@ -34,6 +41,11 @@ defineProps({
         :placeholder="`What's up ${profile.handle}`"
         rows="4"
       ></textarea>
+      <div
+        v-if="errors.content"
+        v-text="errors.content"
+        class="mb-2 text-xs text-red-700"
+      />
       <div class="flex items-center justify-between gap-4">
         <div class="flex gap-4">
           <button type="button">
@@ -50,6 +62,6 @@ defineProps({
           Post
         </button>
       </div>
-    </form>
+    </Form>
   </div>
 </template>

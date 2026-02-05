@@ -17,13 +17,14 @@ class CreatePostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'content' => ['required', 'string', 'max:250'],
+            'content' => ['required', 'string', 'min:2', 'max:250'],
         ];
     }
 
     public function messages(): array
     {
         return [
+            'content.min' => 'Post content must be at least 2 characters.',
             'content.max' => 'Post content must not exceed 250 characters.',
         ];
     }
