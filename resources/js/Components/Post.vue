@@ -5,6 +5,8 @@ import RepostButton from "@/Components/RepostButton.vue";
 import SaveButton from "@/Components/SaveButton.vue";
 import ShareButton from "@/Components/ShareButton.vue";
 import Reply from "@/Components/Reply.vue";
+import ReplyForm from "@/Components/ReplyForm.vue";
+import { ref } from "vue";
 
 defineProps({
   post: {
@@ -20,6 +22,8 @@ defineProps({
     default: false,
   },
 });
+
+const showReplyForm = ref(false);
 </script>
 
 <template>
@@ -83,9 +87,13 @@ defineProps({
           class="mt-6 flex items-center justify-between gap-4"
         >
           <div class="flex items-center gap-8">
-            <LikeButton :post="post" />
-            <ReplyButton :count="post.replies_count" :id="post.id" />
-            <RepostButton :post="post" />
+            <LikeButton :post />
+            <ReplyButton
+              :count="post.replies_count"
+              :id="post.id"
+              @click="showReplyForm = true"
+            />
+            <RepostButton :post />
           </div>
 
           <div class="flex items-center gap-3">
@@ -93,6 +101,13 @@ defineProps({
             <ShareButton :id="post.id" />
           </div>
         </div>
+
+        <ReplyForm
+          v-show="showReplyForm"
+          :post
+          :profile="$page.props.auth.user.profile"
+          @success="showReplyForm = false"
+        />
       </div>
 
       <ol v-if="showReplies">
