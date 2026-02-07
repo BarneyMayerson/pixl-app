@@ -73,18 +73,18 @@ class PostController extends Controller
     {
         $liker = Auth::user()->profile;
 
-        $like = Like::createLike($liker, $post);
+        Like::createLike($liker, $post);
 
-        return response()->json(compact('like'));
+        return back();
     }
 
     public function unlike(Profile $profile, Post $post)
     {
         $liker = Auth::user()->profile;
 
-        $result = Like::removeLike($liker, $post);
+        Like::removeLike($liker, $post);
 
-        return response()->json(compact('result'));
+        return back();
     }
 
     public function destroy(Profile $profile, Post $post)

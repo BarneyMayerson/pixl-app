@@ -83,17 +83,9 @@ defineProps({
           class="mt-6 flex items-center justify-between gap-4"
         >
           <div class="flex items-center gap-8">
-            <LikeButton
-              :active="post.liked_by_viewer"
-              :count="post.likes_count"
-              :id="post.id"
-            />
+            <LikeButton :post="post" />
             <ReplyButton :count="post.replies_count" :id="post.id" />
-            <RepostButton
-              :active="post.reposted_by_viewer"
-              :count="post.reposts_count"
-              :id="post.id"
-            />
+            <RepostButton :post="post" />
           </div>
 
           <div class="flex items-center gap-3">

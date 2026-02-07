@@ -26,8 +26,10 @@ class PostResource extends JsonResource
             'replies_count' => $this->whenCounted('replies'),
             'reposts' => PostResource::collection($this->whenLoaded('reposts')),
             'reposts_count' => $this->whenCounted('reposts'),
+            'reposted_by_viewer' => $this->reposted_by_viewer,
             'likes' => LikeResource::collection($this->whenLoaded('likes')),
             'likes_count' => $this->whenCounted('likes'),
+            'liked_by_viewer' => $this->liked_by_viewer,
         ];
     }
 }
