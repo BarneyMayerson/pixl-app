@@ -46,14 +46,16 @@ import Logo from "@/Components/Logo.vue";
       <div class="flex gap-3.5">
         <a href="/profile" class="shrink-0">
           <img
-            src="/storage/images/adrian.png"
-            alt="Avatar for Adrian"
+            :src="$page.props.auth.user.profile.avatar_url"
+            :alt="`Avatar for ${$page.props.auth.user.profile.display_name}`"
             class="size-11 object-cover"
           />
         </a>
         <div class="flex flex-col gap-1 text-sm">
-          <p>_adrian</p>
-          <p class="text-pixl-light/60">@tudssss</p>
+          <p>{{ $page.props.auth.user.profile.display_name }}</p>
+          <p class="text-pixl-light/60">
+            {{ $page.props.auth.user.profile.handle }}
+          </p>
         </div>
         <button class="group flex gap-0.75 py-2" aria-label="Post options">
           <span
