@@ -39,7 +39,7 @@ class PostController extends Controller
     {
         $post = PostThreadQuery::for($post, Auth::user()?->profile)->load();
 
-        return view('posts.show', compact('post'));
+        return Inertia::render('Posts/Show', ['post' => $post->toResource()]);
     }
 
     public function reply(Profile $profile, Post $post, CreatePostRequest $request)
@@ -48,7 +48,7 @@ class PostController extends Controller
 
         Post::reply($replier, $post, $request->content);
 
-        return to_route('posts.index')->with('success', 'Reply posted.');
+        return back();
     }
 
     public function repost(Profile $profile, Post $post)

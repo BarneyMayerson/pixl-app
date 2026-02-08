@@ -22,6 +22,7 @@ class PostThreadQuery
 
         $this->post
             ->load([
+                'profile',
                 'replies' => fn ($q) => $q
                     ->withCount(['likes', 'replies', 'reposts'])
                     ->withExists([

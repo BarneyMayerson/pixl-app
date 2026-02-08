@@ -29,7 +29,7 @@ defineProps({
     <!-- Line-through -->
     <div
       aria-hidden="true"
-      class="bg-pixl-light/10 absolute left-5 top-0 h-full w-px group-last/li:h-4"
+      class="bg-pixl-light/10 absolute top-0 left-5 h-full w-px group-last/li:h-4"
     ></div>
     <a :href="route('profiles.show', post.profile)" class="isolate shrink-0">
       <img
@@ -38,7 +38,7 @@ defineProps({
         class="size-10 object-cover"
       />
     </a>
-    <div class="border-pixl-light/10 grow border-b pb-5 pt-1.5">
+    <div class="border-pixl-light/10 grow border-b pt-1.5 pb-5">
       <div class="flex items-center justify-between gap-4">
         <div class="flex items-center gap-2.5">
           <p>
@@ -61,7 +61,7 @@ defineProps({
             >
           </p>
         </div>
-        <button class="gap-0.75 group flex py-2" aria-label="Post options">
+        <button class="group flex gap-0.75 py-2" aria-label="Post options">
           <span
             class="bg-pixl-light/40 group-hover:bg-pixl-light/60 size-1"
           ></span>
@@ -80,17 +80,13 @@ defineProps({
         class="mt-6 flex items-center justify-between gap-4"
       >
         <div class="flex items-center gap-8">
-          <LikeButton
-            :active="post.liked_by_viewer"
-            :count="post.likes_count"
+          <LikeButton :post />
+          <ReplyButton
+            :count="post.replies_count"
             :id="post.id"
+            @click="showReplyForm = true"
           />
-          <ReplyButton :count="post.replies_count" :id="post.id" />
-          <RepostButton
-            :active="post.reposted_by_viewer"
-            :count="post.reposts_count"
-            :id="post.id"
-          />
+          <RepostButton :post />
         </div>
         <div class="flex items-center gap-3">
           <SaveButton :id="post.id" />

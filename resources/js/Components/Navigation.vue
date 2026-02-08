@@ -1,5 +1,6 @@
 <script setup>
 import Logo from "@/Components/Logo.vue";
+import { Link } from "@inertiajs/vue3";
 </script>
 
 <template>
@@ -15,7 +16,12 @@ import Logo from "@/Components/Logo.vue";
       <nav class="mt-10">
         <ul class="flex flex-col gap-3.5">
           <li>
-            <a class="hover:underline" href="route('posts.index')">Home</a>
+            <a
+              href="route('posts.index')"
+              class="hover:underline"
+              :class="{ 'text-pixl': $page.component === 'Posts/Index' }"
+              >Home</a
+            >
           </li>
           <li><a class="hover:underline" href="#">Explore</a></li>
           <!-- Active item -->
@@ -36,11 +42,13 @@ import Logo from "@/Components/Logo.vue";
     </div>
 
     <div class="flex flex-col gap-6">
-      <button
-        class="bg-pixl hover:bg-pixl/90 active:bg-pixl/95 text-pixl-dark border border-transparent px-4 py-3 text-sm"
+      <Link
+        v-show="$page.component !== 'Posts/Index'"
+        :href="route('posts.index')"
+        class="bg-pixl hover:bg-pixl/90 active:bg-pixl/95 text-pixl-dark border border-transparent px-4 py-3 text-center text-sm"
       >
         Post
-      </button>
+      </Link>
 
       <!-- User controls -->
       <div class="flex gap-3.5">
