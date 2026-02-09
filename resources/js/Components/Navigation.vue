@@ -17,7 +17,7 @@ import { Link } from "@inertiajs/vue3";
         <ul class="flex flex-col gap-3.5">
           <li>
             <a
-              href="route('posts.index')"
+              :href="route('posts.index')"
               class="hover:underline"
               :class="{ 'text-pixl': $page.component === 'Posts/Index' }"
               >Home</a

@@ -89,25 +89,16 @@ class PostController extends Controller
 
     public function destroy(Profile $profile, Post $post)
     {
-        $currentProfile = Auth::user()->profile;
-
-        if ($currentProfile->is($profile)) {
-            $result = $post->delete();
-
-            return response()->json(compact('result'));
+        if (Auth::user()->can('update', $post)) {
+            $post->delete();
         }
 
-        $repost = $post
+        $post
             ->reposts()
-            ->where('profile_id', $currentProfile->id)
-            ->first();
+            ->where('profile_id', Auth::user()->profile->id)
+            ->first()
+            ?->delete();
 
-        if ($repost) {
-            $result = $post->delete();
-
-            return response()->json(compact('result'));
-        }
-
-        return response()->json(['result' => false], 403);
+        return back();
     }
 }

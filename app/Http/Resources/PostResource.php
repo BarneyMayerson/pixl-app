@@ -6,6 +6,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 
 class PostResource extends JsonResource
 {
@@ -30,6 +31,9 @@ class PostResource extends JsonResource
             'likes' => LikeResource::collection($this->whenLoaded('likes')),
             'likes_count' => $this->whenCounted('likes'),
             'liked_by_viewer' => $this->liked_by_viewer,
+            'can' => [
+                'update' => Auth::check() && Auth::user()->can('update', $this->resource),
+            ],
         ];
     }
 }

@@ -7,6 +7,8 @@ import ShareButton from "@/Components/ShareButton.vue";
 import Reply from "@/Components/Reply.vue";
 import ReplyForm from "@/Components/ReplyForm.vue";
 import { ref } from "vue";
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
+import { Link } from "@inertiajs/vue3";
 
 defineProps({
   post: {
@@ -60,7 +62,68 @@ const showReplyForm = ref(false);
               >
             </p>
           </div>
-          <button class="group flex gap-0.75 py-2" aria-label="Post options">
+
+          <Menu as="div" class="relative inline-block">
+            <MenuButton
+              class="group flex justify-center gap-0.75 rounded-md bg-white/10 px-3 py-2 inset-ring-1 inset-ring-white/5"
+            >
+              <span
+                class="bg-pixl-light/40 group-hover:bg-pixl-light/60 size-1"
+              ></span>
+              <span
+                class="bg-pixl-light/40 group-hover:bg-pixl-light/60 size-1"
+              ></span>
+              <span
+                class="bg-pixl-light/40 group-hover:bg-pixl-light/60 size-1"
+              ></span>
+            </MenuButton>
+
+            <transition
+              enter-active-class="transition ease-out duration-100"
+              enter-from-class="transform opacity-0 scale-95"
+              enter-to-class="transform scale-100"
+              leave-active-class="transition ease-in duration-75"
+              leave-from-class="transform scale-100"
+              leave-to-class="transform opacity-0 scale-95"
+            >
+              <MenuItems
+                class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-gray-900 outline-1 -outline-offset-1 outline-white/10"
+              >
+                <div class="py-1">
+                  <MenuItem v-slot="{ active }">
+                    <Link
+                      :href="route('posts.show', [post.profile, post])"
+                      :class="[
+                        active
+                          ? 'bg-white/5 text-white outline-hidden'
+                          : 'text-gray-300',
+                        'block px-4 py-2 text-sm',
+                      ]"
+                    >
+                      View
+                    </Link>
+                  </MenuItem>
+                  <MenuItem v-if="post.can.update" v-slot="{ active }">
+                    <Link
+                      :href="route('posts.destroy', [post.profile, post])"
+                      method="post"
+                      as="button"
+                      :class="[
+                        active
+                          ? 'bg-white/5 text-white outline-hidden'
+                          : 'text-gray-300',
+                        'block px-4 py-2 text-sm',
+                      ]"
+                    >
+                      Delete
+                    </Link>
+                  </MenuItem>
+                </div>
+              </MenuItems>
+            </transition>
+          </Menu>
+
+          <!-- <button class="group flex gap-0.75 py-2" aria-label="Post options">
             <span
               class="bg-pixl-light/40 group-hover:bg-pixl-light/60 size-1"
             ></span>
@@ -70,7 +133,7 @@ const showReplyForm = ref(false);
             <span
               class="bg-pixl-light/40 group-hover:bg-pixl-light/60 size-1"
             ></span>
-          </button>
+          </button> -->
         </div>
         <!-- Post content -->
         <div
