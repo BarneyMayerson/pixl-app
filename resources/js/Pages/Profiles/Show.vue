@@ -1,7 +1,7 @@
 <script setup>
+import Layout from "@/Layouts/Layout.vue";
 import AppFooter from "@/Components/AppFooter.vue";
 import BackIcon from "@/Components/Icons/BackIcon.vue";
-import Layout from "@/Layouts/layout.vue";
 import Post from "@/Components/Post.vue";
 import ProfileHeader from "@/Components/ProfileHeader.vue";
 

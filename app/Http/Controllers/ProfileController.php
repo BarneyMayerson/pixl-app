@@ -49,7 +49,7 @@ class ProfileController extends Controller
 
         Follow::createFollow($follower, $profile);
 
-        return back()->with('success', 'You are now following this profile.');
+        return back()->with('success', "You are now following this profile [{$profile->handle}].");
     }
 
     public function unfollow(Profile $profile)
@@ -62,6 +62,6 @@ class ProfileController extends Controller
 
         Follow::removeFollow($follower, $profile);
 
-        return back()->with('success', 'You are no longer following this profile.');
+        return back()->with('success', "You are no longer following this profile [{$profile->handle}].");
     }
 }

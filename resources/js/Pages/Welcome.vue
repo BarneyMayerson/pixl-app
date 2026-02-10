@@ -1,5 +1,5 @@
 <script setup>
-import Layout from "../Layouts/layout.vue";
+import Layout from "@/Layouts/Layout.vue";
 
 defineProps({
   greeting: "",

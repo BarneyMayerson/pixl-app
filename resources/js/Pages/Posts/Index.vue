@@ -1,8 +1,8 @@
 <script setup>
-import Layout from "@/Layouts/layout.vue";
+import Layout from "@/Layouts/Layout.vue";
+import AppFooter from "@/Components/AppFooter.vue";
 import PostForm from "@/Components/PostForm.vue";
 import Post from "@/Components/Post.vue";
-import { App } from "@inertiajs/vue3";
 
 defineProps({
   profile: {
