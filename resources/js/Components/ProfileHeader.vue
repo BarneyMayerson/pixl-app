@@ -1,4 +1,6 @@
 <script setup>
+import { Link } from "@inertiajs/vue3";
+
 defineProps({
   profile: {
     type: Object,
@@ -50,14 +52,31 @@ defineProps({
   <div class="mt-6 h-full">
     <nav class="overflow-x-auto [scrollbar-width:none]">
       <ul class="flex min-w-max justify-end gap-8 text-sm">
-        <li><a :href="route('profiles.show', profile)">Posts</a></li>
         <li>
-          <a
-            class="text-pixl-light/60 hover:text-pixl-light/80"
+          <Link
+            class="hover:text-pixl-light/80"
+            :class="
+              route().current('profiles.show')
+                ? 'text-pixl'
+                : 'text-pixl-light/60'
+            "
+            :href="route('profiles.show', profile)"
+          >
+            Posts
+          </Link>
+        </li>
+        <li>
+          <Link
+            class="hover:text-pixl-light/80"
+            :class="
+              route().current('profiles.replies')
+                ? 'text-pixl'
+                : 'text-pixl-light/60'
+            "
             :href="route('profiles.replies', profile)"
           >
             Replies
-          </a>
+          </Link>
         </li>
         <li>
           <a class="text-pixl-light/60 hover:text-pixl-light/80" href="#">

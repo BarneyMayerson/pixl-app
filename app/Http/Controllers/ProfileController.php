@@ -31,7 +31,10 @@ class ProfileController extends Controller
 
         $posts = ProfileWithRepliesQuery::for($profile, Auth::user()?->profile)->get();
 
-        return view('profiles.replies', compact('profile', 'posts'));
+        return Inertia::render('Profiles/Show', [
+            'profile' => $profile->toResource(),
+            'posts' => $posts->toResourceCollection(),
+        ]);
     }
 
     public function follow(Profile $profile)

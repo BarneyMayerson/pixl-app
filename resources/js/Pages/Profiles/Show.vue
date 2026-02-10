@@ -1,4 +1,5 @@
 <script setup>
+import AppFooter from "@/Components/AppFooter.vue";
 import BackIcon from "@/Components/Icons/BackIcon.vue";
 import Layout from "@/Layouts/layout.vue";
 import Post from "@/Components/Post.vue";
@@ -35,12 +36,7 @@ defineProps({
         />
       </ol>
 
-      <footer class="mt-30 ml-14">
-        <p class="text-center">That's all, folks!</p>
-        <hr class="border-pixl-light/10 my-4" />
-        <!-- White noise -->
-        <div class="h-20 bg-[url(/resources/images/white-noise.gif)]"></div>
-      </footer>
+      <AppFooter />
     </main>
   </Layout>
 </template>
