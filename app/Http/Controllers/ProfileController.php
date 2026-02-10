@@ -9,6 +9,7 @@ use App\Models\Profile;
 use App\Queries\ProfilePageQuery;
 use App\Queries\ProfileWithRepliesQuery;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class ProfileController extends Controller
 {
@@ -18,7 +19,10 @@ class ProfileController extends Controller
 
         $posts = ProfilePageQuery::for($profile, Auth::user()?->profile)->get();
 
-        return view('profiles.show', compact('profile', 'posts'));
+        return Inertia::render('Profiles/Show', [
+            'profile' => $profile->toResource(),
+            'posts' => $posts->toResourceCollection(),
+        ]);
     }
 
     public function replies(Profile $profile)

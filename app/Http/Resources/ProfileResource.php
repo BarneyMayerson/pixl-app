@@ -19,6 +19,7 @@ class ProfileResource extends JsonResource
         return [
             'display_name' => $this->display_name,
             'avatar_url' => $this->avatar_url,
+            'cover_url' => $this->cover_url,
             'handle' => $this->handle,
             'bio' => $this->bio,
             'followers_count' => $this->whenCounted('followers'),
