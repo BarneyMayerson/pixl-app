@@ -26,12 +26,19 @@ defineProps({
           <p class="text-pixl-light/60 text-sm">@{{ profile.handle }}</p>
         </div>
       </div>
-      <a
-        href="#"
+      <Link
+        method="post"
+        as="button"
+        :href="
+          route(
+            profile.has_followed ? 'profiles.unfollow' : 'profiles.follow',
+            profile,
+          )
+        "
         class="bg-pixl-dark/50 hover:bg-pixl-dark/60 active:bg-pixl-dark/75 border-pixl/50 hover:border-pixl/60 active:border-pixl/75 text-pixl border px-2 py-1 text-sm"
       >
-        Edit Profile
-      </a>
+        {{ profile.has_followed ? "Unfollow" : "Follow" }}
+      </Link>
     </div>
     <div class="[&_a]:text-pixl mt-8 [&_a]:hover:underline">
       <p>{{ profile.bio }}</p>

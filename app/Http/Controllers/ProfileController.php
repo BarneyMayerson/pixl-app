@@ -17,6 +17,8 @@ class ProfileController extends Controller
     {
         $profile->loadCount(['followers', 'followings']);
 
+        $profile->has_followed = Auth::user() ? Auth::user()->profile->isFollowing($profile) : false;
+
         $posts = ProfilePageQuery::for($profile, Auth::user()?->profile)->get();
 
         return Inertia::render('Profiles/Show', [
@@ -45,9 +47,9 @@ class ProfileController extends Controller
             return back()->with('error', 'You cannot follow yourself.');
         }
 
-        $follow = Follow::createFollow($follower, $profile);
+        Follow::createFollow($follower, $profile);
 
-        return response()->json(compact('follow'));
+        return back()->with('success', 'You are now following this profile.');
     }
 
     public function unfollow(Profile $profile)
@@ -58,8 +60,8 @@ class ProfileController extends Controller
             return back()->with('error', 'You cannot unfollow yourself.');
         }
 
-        $result = Follow::removeFollow($follower, $profile);
+        Follow::removeFollow($follower, $profile);
 
-        return response()->json(compact('result'));
+        return back()->with('success', 'You are no longer following this profile.');
     }
 }

@@ -28,6 +28,7 @@ class ProfileResource extends JsonResource
             'replies_count' => $this->whenCounted('replies'),
             'reposts_count' => $this->whenCounted('reposts'),
             'likes_count' => $this->whenCounted('likes'),
+            'has_followed' => $this->has_followed ?? false,
         ];
     }
 }

@@ -62,4 +62,9 @@ class Profile extends Model
     {
         return $this->belongsToMany(Profile::class, 'follows', 'follower_profile_id', 'following_profile_id');
     }
+
+    public function isFollowing(Profile $profile): bool
+    {
+        return $this->followings()->where('following_profile_id', $profile->id)->exists();
+    }
 }
