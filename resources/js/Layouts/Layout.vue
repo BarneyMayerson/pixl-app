@@ -11,6 +11,6 @@ import FlashMessages from "@/Components/FlashMessages.vue";
     <Navigation />
     <slot />
     <Aside />
-    <FlashMessages />
+    <FlashMessages timeout="5000" position="top-left" />
   </div>
 </template>
