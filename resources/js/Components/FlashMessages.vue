@@ -61,20 +61,25 @@ function startTimer(id) {
 
 function pauseTimer(id) {
   const toast = toasts.value.find((t) => t.id === id);
+
   if (!toast || !toast.timer) return;
 
   clearTimeout(toast.timer);
+
   const elapsed = Date.now() - toast.startedAt;
+
   toast.remaining = Math.max(0, toast.remaining - elapsed);
   toast.timer = null;
 }
 
 function removeToast(id) {
   const toast = toasts.value.find((t) => t.id === id);
+
   if (toast) {
     toast.visible = false;
     clearTimeout(toast.timer);
   }
+
   setTimeout(() => {
     toasts.value = toasts.value.filter((t) => t.id !== id);
   }, 300);
@@ -125,7 +130,7 @@ const bgClass = (type) =>
           @mouseleave="startTimer(toast.id)"
           :class="[
             bgClass(toast.type),
-            'relative max-w-[420px] min-w-[280px] overflow-hidden rounded-xl px-4 py-3 text-white shadow-xl',
+            'relative max-w-105 min-w-70 overflow-hidden rounded-xl px-4 py-3 text-white shadow-xl',
             'group flex items-start gap-3',
           ]"
         >
@@ -141,11 +146,11 @@ const bgClass = (type) =>
 
           <div
             v-if="props.timeout > 0"
-            class="absolute right-0 bottom-0 left-0 h-1 overflow-hidden rounded-full bg-black/20"
+            class="absolute right-0 bottom-0 left-0 h-1.5 bg-black/20"
           >
             <div
               class="h-full w-full origin-left bg-white/60"
-              :class="{ 'animate-progress': toast.timer && toast.visible }"
+              :class="{ 'animate-progress': toast.timer }"
               :style="{ animationDuration: `${toast.remaining}ms` }"
             />
           </div>
