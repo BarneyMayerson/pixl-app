@@ -1,6 +1,6 @@
 <script setup>
 import { usePage } from "@inertiajs/vue3";
-import { ref, watch, computed } from "vue";
+import { ref, watch, computed, nextTick } from "vue";
 
 const page = usePage();
 const toasts = ref([]);
@@ -43,20 +43,28 @@ function addToast(message, type = "success") {
     message,
     type,
     visible: true,
+    paused: false,
     remaining: props.timeout,
     startedAt: Date.now(),
     timer: null,
+    isClosing: false,
   });
 
-  startTimer(id);
+  // Important with nextTick.
+  // Otherwise, it doesn't render progress with scale=1 at the very beginning of the flash message.
+  nextTick(() => {
+    startTimer(id);
+  });
 }
 
 function startTimer(id) {
   const toast = toasts.value.find((t) => t.id === id);
-  if (!toast || props.timeout <= 0 || toast.remaining <= 0) return;
 
-  toast.startedAt = Date.now();
+  if (!toast || props.timeout <= 0) return;
+
+  toast.paused = false;
   toast.timer = setTimeout(() => removeToast(id), toast.remaining);
+  toast.startedAt = Date.now();
 }
 
 function pauseTimer(id) {
@@ -64,11 +72,12 @@ function pauseTimer(id) {
 
   if (!toast || !toast.timer) return;
 
-  clearTimeout(toast.timer);
+  toast.paused = true;
 
   const elapsed = Date.now() - toast.startedAt;
 
-  toast.remaining = Math.max(0, toast.remaining - elapsed);
+  toast.remaining -= elapsed;
+  clearTimeout(toast.timer);
   toast.timer = null;
 }
 
@@ -76,13 +85,48 @@ function removeToast(id) {
   const toast = toasts.value.find((t) => t.id === id);
 
   if (toast) {
+    toast.isClosing = true;
     toast.visible = false;
     clearTimeout(toast.timer);
+    toast.timer = null;
   }
 
   setTimeout(() => {
     toasts.value = toasts.value.filter((t) => t.id !== id);
   }, 300);
+}
+
+function getProgressStyle(toast) {
+  if (!toast || props.timeout <= 0) {
+    return { transform: "scaleX(1)", transitionDuration: "0s" };
+  }
+
+  if (toast.isClosing) {
+    return {
+      transform: "scaleX(0)",
+      transitionDuration: "0s",
+    };
+  }
+
+  if (toast.paused) {
+    const progress = toast.remaining / props.timeout;
+    return {
+      transform: `scaleX(${progress})`,
+      transitionDuration: "0s",
+    };
+  }
+
+  if (toast.timer) {
+    return {
+      transform: "scaleX(0)",
+      transitionDuration: `${toast.remaining}ms`,
+    };
+  }
+
+  return {
+    transform: "scaleX(1)",
+    transitionDuration: "0s",
+  };
 }
 
 watch(
@@ -146,12 +190,11 @@ const bgClass = (type) =>
 
           <div
             v-if="props.timeout > 0"
-            class="absolute right-0 bottom-0 left-0 h-1.5 bg-black/20"
+            class="absolute right-0 bottom-0 left-0 h-1 bg-black/20"
           >
             <div
-              class="h-full w-full origin-left bg-white/60"
-              :class="{ 'animate-progress': toast.timer }"
-              :style="{ animationDuration: `${toast.remaining}ms` }"
+              class="linear h-full w-full origin-left bg-white/60 transition-transform"
+              :style="getProgressStyle(toast)"
             />
           </div>
         </div>
@@ -161,16 +204,7 @@ const bgClass = (type) =>
 </template>
 
 <style scoped>
-@keyframes progress {
-  from {
-    transform: scaleX(1);
-  }
-  to {
-    transform: scaleX(0);
-  }
-}
-
-.animate-progress {
-  animation: progress linear forwards;
+.linear {
+  transition-timing-function: linear;
 }
 </style>
