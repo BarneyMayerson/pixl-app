@@ -3,14 +3,10 @@ import { usePage } from "@inertiajs/vue3";
 import { ref, watch, computed } from "vue";
 
 const page = usePage();
-
 const toasts = ref([]);
 
 const props = defineProps({
-  timeout: {
-    type: Number,
-    default: 4000,
-  },
+  timeout: { type: Number, default: 4000 },
   position: {
     type: String,
     default: "bottom-right",
@@ -19,53 +15,66 @@ const props = defineProps({
   },
 });
 
-const isLeft = computed(() => props.position.includes("left"));
-const isTop = computed(() => props.position.includes("top"));
+const stackDirection = computed(() =>
+  props.position.includes("top") ? "flex-col" : "flex-col-reverse",
+);
 
 const positionClass = computed(() => {
-  switch (props.position) {
-    case "top-left":
-      return "top-4 left-4";
-    case "top-right":
-      return "top-4 right-4";
-    case "bottom-left":
-      return "bottom-4 left-4";
-    case "bottom-right":
-      return "bottom-4 right-4";
-    default:
-      return "bottom-4 right-4";
-  }
+  const map = {
+    "top-left": "top-4 left-4",
+    "top-right": "top-4 right-4",
+    "bottom-left": "bottom-4 left-4",
+    "bottom-right": "bottom-4 right-4",
+  };
+  return map[props.position];
 });
 
-const enterFromTranslate = computed(() =>
+const isLeft = computed(() => props.position.includes("left"));
+const translateClass = computed(() =>
   isLeft.value ? "-translate-x-8" : "translate-x-8",
-);
-
-const leaveToTranslate = computed(() =>
-  isLeft.value ? "-translate-x-8" : "translate-x-8",
-);
-
-const stackDirection = computed(() =>
-  isTop.value ? "flex-col-reverse" : "flex-col",
 );
 
 function addToast(message, type = "success") {
   if (!message) return;
 
   const id = Date.now();
+  toasts.value.push({
+    id,
+    message,
+    type,
+    visible: true,
+    remaining: props.timeout,
+    startedAt: Date.now(),
+    timer: null,
+  });
 
-  toasts.value.push({ id, message, type, visible: true });
+  startTimer(id);
+}
 
-  if (props.timeout > 0) {
-    setTimeout(() => removeToast(id), props.timeout);
-  }
+function startTimer(id) {
+  const toast = toasts.value.find((t) => t.id === id);
+  if (!toast || props.timeout <= 0 || toast.remaining <= 0) return;
+
+  toast.startedAt = Date.now();
+  toast.timer = setTimeout(() => removeToast(id), toast.remaining);
+}
+
+function pauseTimer(id) {
+  const toast = toasts.value.find((t) => t.id === id);
+  if (!toast || !toast.timer) return;
+
+  clearTimeout(toast.timer);
+  const elapsed = Date.now() - toast.startedAt;
+  toast.remaining = Math.max(0, toast.remaining - elapsed);
+  toast.timer = null;
 }
 
 function removeToast(id) {
   const toast = toasts.value.find((t) => t.id === id);
-
-  if (toast) toast.visible = false;
-
+  if (toast) {
+    toast.visible = false;
+    clearTimeout(toast.timer);
+  }
   setTimeout(() => {
     toasts.value = toasts.value.filter((t) => t.id !== id);
   }, 300);
@@ -82,52 +91,81 @@ watch(
   { deep: true },
 );
 
-const bgClass = (type) => {
-  const map = {
+const bgClass = (type) =>
+  ({
     success: "bg-emerald-600",
     error: "bg-red-600",
     warning: "bg-amber-600",
     info: "bg-blue-600",
-  };
-  return map[type] || "bg-emerald-600";
-};
+  })[type] || "bg-emerald-600";
 </script>
 
 <template>
   <Teleport to="body">
-    <div :class="[positionClass, stackDirection, 'fixed z-50 flex gap-2']">
+    <div
+      :class="[
+        positionClass,
+        stackDirection,
+        'fixed z-50 flex w-full max-w-fit gap-2',
+      ]"
+    >
       <TransitionGroup
-        :enter-active-class="`transition-all duration-300 ease-out`"
-        :enter-from-class="`opacity-0 scale-95 ${enterFromTranslate}`"
-        :enter-to-class="`opacity-100 scale-100 translate-x-0`"
-        :leave-active-class="`transition-all duration-200 ease-out`"
-        :leave-from-class="`opacity-100 scale-100 translate-x-0`"
-        :leave-to-class="`opacity-0 scale-95 ${leaveToTranslate}`"
+        enter-active-class="transition-all duration-300 ease-out"
+        :enter-from-class="`opacity-0 scale-95 ${translateClass}`"
+        enter-to-class="opacity-100 scale-100 translate-x-0"
+        leave-active-class="transition-all duration-200 ease-in"
+        leave-from-class="opacity-100 scale-100 translate-x-0"
+        :leave-to-class="`opacity-0 scale-95 ${translateClass}`"
       >
         <div
           v-for="toast in toasts"
           :key="toast.id"
           v-show="toast.visible"
+          @mouseenter="pauseTimer(toast.id)"
+          @mouseleave="startTimer(toast.id)"
           :class="[
             bgClass(toast.type),
-            'max-w-105 min-w-70 rounded-xl px-4 py-3 text-white shadow-xl',
+            'relative max-w-[420px] min-w-[280px] overflow-hidden rounded-xl px-4 py-3 text-white shadow-xl',
             'group flex items-start gap-3',
           ]"
-          role="alert"
-          aria-live="polite"
         >
-          <div class="flex-1 pt-0.5 text-sm leading-snug">
+          <div class="flex-1 pt-0.5 text-sm leading-snug font-medium">
             {{ toast.message }}
           </div>
           <button
             @click="removeToast(toast.id)"
-            class="-mt-1 -mr-1 rounded-lg p-1 opacity-60 transition-opacity hover:bg-white/20 hover:opacity-100"
-            aria-label="Close notification"
+            class="opacity-60 transition-opacity hover:opacity-100"
           >
             ✕
           </button>
+
+          <div
+            v-if="props.timeout > 0"
+            class="absolute right-0 bottom-0 left-0 h-1 overflow-hidden rounded-full bg-black/20"
+          >
+            <div
+              class="h-full w-full origin-left bg-white/60"
+              :class="{ 'animate-progress': toast.timer && toast.visible }"
+              :style="{ animationDuration: `${toast.remaining}ms` }"
+            />
+          </div>
         </div>
       </TransitionGroup>
     </div>
   </Teleport>
 </template>
+
+<style scoped>
+@keyframes progress {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
+.animate-progress {
+  animation: progress linear forwards;
+}
+</style>
