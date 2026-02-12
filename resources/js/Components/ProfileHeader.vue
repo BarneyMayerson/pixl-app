@@ -27,6 +27,10 @@ defineProps({
         </div>
       </div>
       <Link
+        v-if="
+          $page.props.auth.user &&
+          profile.id !== $page.props.auth.user?.profile.id
+        "
         method="post"
         as="button"
         :href="

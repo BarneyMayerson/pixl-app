@@ -1,15 +1,13 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
-Route::get('/', fn () => Inertia::render('Welcome', [
-    'greeting' => 'Hi there!',
-]));
+Route::get('/', HomeController::class)->middleware('guest');
 
 Route::get('/dev/login', function () {
     $user = User::findOrFail(9);
@@ -25,7 +23,7 @@ Route::get('/dev/logout', function () {
     request()->session()->invalidate();
     request()->session()->regenerateToken();
 
-    return redirect()->intended('/feed');
+    return redirect('/');
 });
 
 Route::middleware('auth')->group(function (): void {
